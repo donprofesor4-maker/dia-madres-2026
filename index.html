@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Día de las Madres 2026 · 4° Año</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz@9..40&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --crema: #faf7f2;
+  --terracota: #c8806a;
+  --dorado: #b08060;
+  --texto: #3a2f2a;
+}
+
+body {
+  background: var(--crema);
+  color: var(--texto);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Header ─────────────────────── */
+header {
+  text-align: center;
+  padding: 48px 24px 32px;
+  border-bottom: 1px solid rgba(176,128,96,0.2);
+  margin-bottom: 32px;
+}
+
+header .colegio {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dorado);
+  margin-bottom: 8px;
+}
+
+header h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  color: var(--terracota);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+header .subtitulo {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--dorado);
+  margin-top: 8px;
+}
+
+header .grado {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--texto);
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+/* ── Filtros ────────────────────── */
+.filtros {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.filtro-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--dorado);
+  color: var(--dorado);
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.filtro-btn:hover,
+.filtro-btn.active {
+  background: var(--terracota);
+  border-color: var(--terracota);
+  color: #fff;
+}
+
+/* ── Galería ────────────────────── */
+.galeria {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 16px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.thumb {
+  cursor: pointer;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.thumb:hover {
+  transform: scaleY(1.04) translateY(-3px);
+}
+
+.thumb-tall  { width: 88px;  height: 118px; }
+.thumb-wide  { width: 158px; height: 98px;  }
+.thumb-sq    { width: 98px;  height: 98px;  }
+.thumb-sm    { width: 70px;  height: 88px;  }
+
+@media (max-width: 600px) {
+  .thumb-tall  { width: 66px;  height: 88px;  }
+  .thumb-wide  { width: 118px; height: 73px;  }
+  .thumb-sq    { width: 73px;  height: 73px;  }
+  .thumb-sm    { width: 52px;  height: 66px;  }
+}
+
+/* ── Lightbox ───────────────────── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(20,16,12,0.94);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.lightbox.open { opacity: 1; pointer-events: auto; }
+
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 70vh;
+  object-fit: contain;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.lightbox-img.slide-in {
+  animation: slideIn 0.35s ease forwards;
+}
+
+.lightbox-img.slide-out {
+  animation: slideOut 0.35s ease forwards;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(60px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes slideOut {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(-60px); opacity: 0; }
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+  background: none;
+  border: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.lightbox-close:hover { opacity: 1; }
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2.2rem;
+  color: #fff;
+  cursor: pointer;
+  background: none;
+  border: none;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  padding: 16px;
+}
+
+.lightbox-nav:hover { opacity: 1; }
+.lightbox-prev { left: 8px; }
+.lightbox-next { right: 8px; }
+
+/* ── Filmstrip ──────────────────── */
+.filmstrip {
+  display: flex;
+  gap: 4px;
+  padding: 16px 8px;
+  overflow-x: auto;
+  max-width: 90vw;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.filmstrip::-webkit-scrollbar { display: none; }
+
+.filmstrip img {
+  height: 60px;
+  width: auto;
+  min-width: 40px;
+  object-fit: cover;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 0.2s, outline 0.2s;
+  flex-shrink: 0;
+}
+
+.filmstrip img.active {
+  opacity: 1;
+  outline: 2px solid var(--terracota);
+  outline-offset: 2px;
+}
+
+/* ── Loading ────────────────────── */
+.loading {
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--dorado);
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="colegio">Colegio de Cervantes · 2026</div>
+  <h1>Día de las Madres</h1>
+  <div class="subtitulo">4° Año · Baile de MJ & Shakira</div>
+</header>
+
+<div class="filtros">
+  <button class="filtro-btn active" data-tag="todas">Todas</button>
+  <button class="filtro-btn" data-tag="mj">Michael Jackson</button>
+  <button class="filtro-btn" data-tag="shakira">Shakira</button>
+</div>
+
+<div class="galeria" id="galeria">
+  <div class="loading">Cargando recuerdos...</div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose">&times;</button>
+  <button class="lightbox-nav lightbox-prev" id="lbPrev">&lsaquo;</button>
+  <button class="lightbox-nav lightbox-next" id="lbNext">&rsaquo;</button>
+  <img class="lightbox-img" id="lbImg" src="" alt="">
+  <div class="filmstrip" id="filmstrip"></div>
+</div>
+
+<script>
+/* ── Estado ─────────────────────── */
+let todas = [];
+let filtradas = [];
+let tagActual = 'todas';
+let idxActual = -1;
+let dir = 1; // 1 = next (slideIn from right), -1 = prev (slideOut to left)
+
+/* ── DOM ────────────────────────── */
+const galeria   = document.getElementById('galeria');
+const lightbox  = document.getElementById('lightbox');
+const lbImg     = document.getElementById('lbImg');
+const filmstrip = document.getElementById('filmstrip');
+const lbClose   = document.getElementById('lbClose');
+const lbPrev    = document.getElementById('lbPrev');
+const lbNext    = document.getElementById('lbNext');
+
+/* ── Clases de thumbnail ────────── */
+const CLASES  = ['thumb-tall','thumb-wide','thumb-sq','thumb-sm','thumb-wide'];
+// patrón: tall, wide, sq, sm, wide, tall, sq, sm, wide, ...
+
+function claseThumb(i) {
+  return CLASES[i % CLASES.length];
+}
+
+/* ── Cargar JSON ────────────────── */
+async function cargar() {
+  try {
+    const resp = await fetch('fotos_baile.json');
+    todas = await resp.json();
+    filtrar('todas');
+  } catch (e) {
+    galeria.innerHTML = '<div class="loading">Error al cargar las fotos</div>';
+  }
+}
+
+/* ── Filtrar ────────────────────── */
+function filtrar(tag) {
+  tagActual = tag;
+  filtradas = tag === 'todas' ? [...todas] : todas.filter(f => f.tag === tag);
+  idxActual = -1;
+  renderGaleria();
+  document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tag === tag);
+  });
+}
+
+/* ── Render galería ─────────────── */
+function renderGaleria() {
+  galeria.innerHTML = '';
+  filtradas.forEach((foto, i) => {
+    const img = document.createElement('img');
+    img.src = foto.url;
+    img.alt = foto.nombre;
+    img.loading = 'lazy';
+    img.classList.add('thumb', claseThumb(i));
+    img.addEventListener('click', () => abrirLightbox(i));
+    galeria.appendChild(img);
+  });
+}
+
+/* ── Lightbox ───────────────────── */
+function abrirLightbox(i) {
+  idxActual = i;
+  dir = 1;
+  mostrarFoto();
+  lightbox.classList.add('open');
+  renderFilmstrip();
+}
+
+function cerrarLightbox() {
+  lightbox.classList.remove('open');
+  lbImg.src = '';
+  idxActual = -1;
+  filmstrip.innerHTML = '';
+}
+
+function mostrarFoto() {
+  if (idxActual < 0 || idxActual >= filtradas.length) return;
+  lbImg.src = filtradas[idxActual].url;
+  lbImg.classList.remove('slide-in', 'slide-out');
+  void lbImg.offsetWidth;
+  if (dir === 1) {
+    lbImg.classList.add('slide-in');
+  } else {
+    lbImg.classList.add('slide-out');
+  }
+  renderFilmstrip();
+}
+
+function navegar(delta) {
+  if (filtradas.length === 0) return;
+  dir = delta > 0 ? 1 : -1;
+  idxActual = (idxActual + delta + filtradas.length) % filtradas.length;
+  mostrarFoto();
+}
+
+/* ── Filmstrip ──────────────────── */
+function renderFilmstrip() {
+  filmstrip.innerHTML = '';
+  filtradas.forEach((foto, i) => {
+    const img = document.createElement('img');
+    img.src = foto.url;
+    img.alt = foto.nombre;
+    if (i === idxActual) img.classList.add('active');
+    img.addEventListener('click', () => {
+      dir = i > idxActual ? 1 : -1;
+      idxActual = i;
+      mostrarFoto();
+    });
+    filmstrip.appendChild(img);
+  });
+  // scroll filmstrip para mostrar la activa
+  const activeEl = filmstrip.querySelector('.active');
+  if (activeEl) {
+    activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+}
+
+/* ── Eventos ────────────────────── */
+lbClose.addEventListener('click', cerrarLightbox);
+lbPrev.addEventListener('click', () => navegar(-1));
+lbNext.addEventListener('click', () => navegar(1));
+
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) cerrarLightbox();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') cerrarLightbox();
+  if (e.key === 'ArrowLeft')  navegar(-1);
+  if (e.key === 'ArrowRight') navegar(1);
+});
+
+document.querySelectorAll('.filtro-btn').forEach(btn => {
+  btn.addEventListener('click', () => filtrar(btn.dataset.tag));
+});
+
+/* ── Arranque ───────────────────── */
+cargar();
+</script>
+</body>
+</html>
