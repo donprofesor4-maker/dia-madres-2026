@@ -305,12 +305,12 @@ header .grado {
 <header>
   <div class="colegio">Colegio de Cervantes · 2026</div>
   <h1>Día de las Madres</h1>
-  <div class="subtitulo">4° Año · Baile de MJ & Shakira</div>
+  <div class="subtitulo">4° Año · Shakira & Bisbal</div>
 </header>
 
 <div class="filtros" id="filtros" style="display:none">
   <button class="volver-btn" id="volverBtn">&larr; Portadas</button>
-  <button class="filtro-btn active" data-tag="mj">Michael Jackson</button>
+  <button class="filtro-btn active" data-tag="bisbal">Bisbal</button>
   <button class="filtro-btn" data-tag="shakira">Shakira</button>
 </div>
 
@@ -333,7 +333,7 @@ header .grado {
 /* ── Estado ─────────────────────── */
 let todas = [];
 let filtradas = [];
-let tagActual = 'mj';
+let tagActual = 'bisbal';
 let idxActual = -1;
 let dir = 1;
 
@@ -369,7 +369,7 @@ async function cargar() {
 
 /* ── Portadas ───────────────────── */
 function renderPortadas() {
-  const mj = todas.filter(f => f.tag === 'mj');
+  const bisbal = todas.filter(f => f.tag === 'bisbal');
   const sh = todas.filter(f => f.tag === 'shakira');
 
   portadasEl.innerHTML = '';
@@ -377,7 +377,7 @@ function renderPortadas() {
   galeria.style.display = 'none';
   filtrosEl.style.display = 'none';
 
-  [{ tag: 'mj', label: 'Michael Jackson', fotos: mj },
+  [{ tag: 'bisbal', label: 'Bisbal', fotos: bisbal },
    { tag: 'shakira', label: 'Shakira', fotos: sh }
   ].forEach(grupo => {
     const card = document.createElement('div');
