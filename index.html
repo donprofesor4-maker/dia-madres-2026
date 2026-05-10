@@ -74,7 +74,7 @@ header .grado {
   flex-wrap: wrap;
 }
 
-.filtro-btn {
+.filtro-btn, .volver-btn {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.8rem;
   letter-spacing: 0.08em;
@@ -92,6 +92,61 @@ header .grado {
   background: var(--terracota);
   border-color: var(--terracota);
   color: #fff;
+}
+
+.volver-btn {
+  display: none;
+  border-color: var(--texto);
+  color: var(--texto);
+  opacity: 0.6;
+}
+
+.volver-btn:hover { opacity: 1; }
+
+/* ── Portadas ───────────────────── */
+.portadas {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding: 24px 16px 48px;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.portada-card {
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.35s ease;
+  max-width: 380px;
+  flex: 1 1 280px;
+}
+
+.portada-card:hover {
+  transform: translateY(-6px);
+}
+
+.portada-card img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+.portada-card .portada-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  color: var(--terracota);
+  margin-top: 12px;
+}
+
+.portada-card .portada-count {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  color: var(--dorado);
+  opacity: 0.7;
+  margin-top: 2px;
 }
 
 /* ── Galería ────────────────────── */
@@ -253,15 +308,17 @@ header .grado {
   <div class="subtitulo">4° Año · Baile de MJ & Shakira</div>
 </header>
 
-<div class="filtros">
-  <button class="filtro-btn active" data-tag="todas">Todas</button>
-  <button class="filtro-btn" data-tag="mj">Michael Jackson</button>
+<div class="filtros" id="filtros" style="display:none">
+  <button class="volver-btn" id="volverBtn">&larr; Portadas</button>
+  <button class="filtro-btn active" data-tag="mj">Michael Jackson</button>
   <button class="filtro-btn" data-tag="shakira">Shakira</button>
 </div>
 
-<div class="galeria" id="galeria">
+<div class="portadas" id="portadas">
   <div class="loading">Cargando recuerdos...</div>
 </div>
+
+<div class="galeria" id="galeria" style="display:none"></div>
 
 <!-- Lightbox -->
 <div class="lightbox" id="lightbox">
@@ -276,42 +333,77 @@ header .grado {
 /* ── Estado ─────────────────────── */
 let todas = [];
 let filtradas = [];
-let tagActual = 'todas';
+let tagActual = 'mj';
 let idxActual = -1;
-let dir = 1; // 1 = next (slideIn from right), -1 = prev (slideOut to left)
+let dir = 1;
 
 /* ── DOM ────────────────────────── */
-const galeria   = document.getElementById('galeria');
-const lightbox  = document.getElementById('lightbox');
-const lbImg     = document.getElementById('lbImg');
-const filmstrip = document.getElementById('filmstrip');
-const lbClose   = document.getElementById('lbClose');
-const lbPrev    = document.getElementById('lbPrev');
-const lbNext    = document.getElementById('lbNext');
+const galeria    = document.getElementById('galeria');
+const portadasEl = document.getElementById('portadas');
+const filtrosEl  = document.getElementById('filtros');
+const volverBtn  = document.getElementById('volverBtn');
+const lightbox   = document.getElementById('lightbox');
+const lbImg      = document.getElementById('lbImg');
+const filmstrip  = document.getElementById('filmstrip');
+const lbClose    = document.getElementById('lbClose');
+const lbPrev     = document.getElementById('lbPrev');
+const lbNext     = document.getElementById('lbNext');
 
 /* ── Clases de thumbnail ────────── */
-const CLASES  = ['thumb-tall','thumb-wide','thumb-sq','thumb-sm','thumb-wide'];
-// patrón: tall, wide, sq, sm, wide, tall, sq, sm, wide, ...
+const CLASES = ['thumb-tall','thumb-wide','thumb-sq','thumb-sm','thumb-wide'];
 
 function claseThumb(i) {
   return CLASES[i % CLASES.length];
 }
 
-/* ── Cargar JSON ────────────────── */
+/* ── Cargar JSON → mostrar portadas */
 async function cargar() {
   try {
     const resp = await fetch('fotos_baile.json');
     todas = await resp.json();
-    filtrar('todas');
+    renderPortadas();
   } catch (e) {
-    galeria.innerHTML = '<div class="loading">Error al cargar las fotos</div>';
+    portadasEl.innerHTML = '<div class="loading">Error al cargar las fotos</div>';
   }
+}
+
+/* ── Portadas ───────────────────── */
+function renderPortadas() {
+  const mj = todas.filter(f => f.tag === 'mj');
+  const sh = todas.filter(f => f.tag === 'shakira');
+
+  portadasEl.innerHTML = '';
+  portadasEl.style.display = 'flex';
+  galeria.style.display = 'none';
+  filtrosEl.style.display = 'none';
+
+  [{ tag: 'mj', label: 'Michael Jackson', fotos: mj },
+   { tag: 'shakira', label: 'Shakira', fotos: sh }
+  ].forEach(grupo => {
+    const card = document.createElement('div');
+    card.className = 'portada-card';
+    card.innerHTML = `
+      <img src="${grupo.fotos[0].url}" alt="${grupo.label}" loading="eager">
+      <div class="portada-label">${grupo.label}</div>
+      <div class="portada-count">${grupo.fotos.length} fotos</div>
+    `;
+    card.addEventListener('click', () => abrirGaleria(grupo.tag));
+    portadasEl.appendChild(card);
+  });
+}
+
+function abrirGaleria(tag) {
+  tagActual = tag;
+  portadasEl.style.display = 'none';
+  galeria.style.display = 'flex';
+  filtrosEl.style.display = 'flex';
+  filtrar(tag);
 }
 
 /* ── Filtrar ────────────────────── */
 function filtrar(tag) {
   tagActual = tag;
-  filtradas = tag === 'todas' ? [...todas] : todas.filter(f => f.tag === tag);
+  filtradas = todas.filter(f => f.tag === tag);
   idxActual = -1;
   renderGaleria();
   document.querySelectorAll('.filtro-btn').forEach(btn => {
@@ -384,7 +476,6 @@ function renderFilmstrip() {
     });
     filmstrip.appendChild(img);
   });
-  // scroll filmstrip para mostrar la activa
   const activeEl = filmstrip.querySelector('.active');
   if (activeEl) {
     activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
@@ -410,6 +501,8 @@ document.addEventListener('keydown', (e) => {
 document.querySelectorAll('.filtro-btn').forEach(btn => {
   btn.addEventListener('click', () => filtrar(btn.dataset.tag));
 });
+
+volverBtn.addEventListener('click', renderPortadas);
 
 /* ── Arranque ───────────────────── */
 cargar();
